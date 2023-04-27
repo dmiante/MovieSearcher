@@ -31,19 +31,24 @@ function useSearch () {
 }
 
 function App () {
+  const [sort, setSort] = useState(false)
   const { search, setSearch, error } = useSearch()
-  const { movies, loading, getMovies } = useMovies({ search })
+  const { movies, loading, getMovies } = useMovies({ search, sort })
   // const hasMovies = movies?.length > 0
 
   function handleSubmit (e) {
     e.preventDefault()
-    getMovies()
+    getMovies({ search })
   }
 
   function handleChange (event) {
     const newQuery = event.target.value
     if (newQuery.startsWith(' ')) return
     setSearch(newQuery)
+  }
+
+  function handleSort () {
+    setSort(!sort)
   }
 
   return (
@@ -71,6 +76,12 @@ function App () {
               />
             </div>
           </section>
+          <input
+            className='mr-4 w-6 h-6'
+            type='checkbox'
+            onChange={handleSort}
+            checked={sort}
+          />
           <button
             className='inline-block h-full rounded-lg bg-indigo-600 dark:bg-white px-7 py-4 text-base font-medium text-white dark:text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500'
             type='submit'
